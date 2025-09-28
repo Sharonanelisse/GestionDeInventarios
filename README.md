@@ -17,9 +17,8 @@ Sistema de gestión de investarios con JPQL y Criteria API
 src/main/java/com/smarroquin/gestiondeinventarios/
 ├── controllers/          # Controladores de la Web
 ├── models/               # Modelos de Categorio, producto y movimiento
-├── services/             # Servicios del Inventario
 ├── repositories/         # Acceso a datos
-├── controllers/          # Enumeraciones
+├── services/             # Servicios del Inventario
 └── utils/                # Utilidades
 ```
 
