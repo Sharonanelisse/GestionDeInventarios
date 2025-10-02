@@ -45,7 +45,7 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Long> cq = cb.createQuery(Long.class);
             Root<Producto> root = cq.from(Producto.class);
-            cq.select(cb.count(root))
+          cq.select(cb.count(root))
                     .where(cb.isFalse(root.get("activo")));
             return em.createQuery(cq).getSingleResult();
         } finally {

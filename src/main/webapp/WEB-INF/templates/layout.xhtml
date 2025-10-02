@@ -1,0 +1,63 @@
+
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+>
+<h:head>
+    <title>Gestor de Inventarios</title>
+    <meta charset="UTF-8" />
+    <style>
+        .brand {
+            font-weight: 800;
+            letter-spacing: 0.5px;
+        }
+
+        .shell {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 1.5rem;
+        }
+
+        .card {
+            background: var(--surface-card);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            box-shadow: 0 8px 30px -12px rgba(0, 0, 0, 0.2);
+        }
+
+        .muted {
+            opacity: 0.8;
+        }
+    </style>
+</h:head>
+<h:body>
+    <div class="shell">
+        <div class="card" style="margin-bottom: 1rem">
+            <p:menubar>
+                <p:menuitem
+                        value="Lista de Categorias"
+                        outcome="/pages/category.xhtml"
+                        icon="bi bi-list"
+                />
+                <p:menuitem
+                        value="Lista de Categorias"
+                        outcome="/pages/stock.xhtml"
+                        icon="bi bi-receipt"
+
+                />
+                <p:menuitem
+                        value="Dashboard"
+                        outcome="" //aqui agregan el dashboard que hizo Josimar *//
+                        icon="" // el icono que le quieran dar ( que sea de boostrap ) //
+                />
+            </p:menubar>
+        </div>
+
+        <ui:insert name="content" />
+        <p:growl id="globalGrowl" showDetail="true" life="3000" />
+    </div>
+</h:body>
+</html>
