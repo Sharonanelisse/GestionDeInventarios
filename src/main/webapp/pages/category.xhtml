@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html
+        xmlns="http://www.w3.org/1999/xhtml"
+        xmlns:h="http://xmlns.jcp.org/jsf/html"
+        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+        xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
+>
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+    <ui:define name="content">
+        <div class="card">
+            <h2>Lista de Categorias</h2>
+            <h:form id="formCatalog">
+                <div class="p-inputgroup" style="margin-bottom: 1rem">
+                    <p:inputText
+                            value="#{CategoriaController.query}"
+                            placeholder="Buscar por nombre"
+                    />
+                    <p:commandButton
+                            value="Buscar"
+                            actionListener="#{CategoriaController.buscarPorId}"
+                            update="table msgs"
+                            icon="pi pi-search"
+                    />
+                </div>
+
+                <p:dataTable
+                        id="table"
+                        value="#{CategoriaController.categoria}"
+                        var="p"
+                        paginator="true"
+                        rows="10"
+                        responsiveLayout="scroll"
+                        styleClass="p-datatable-striped p-datatable-gridlines"
+                >
+                    <p:column headerText="ID" width="80">#{p.id}</p:column>
+
+                    <p:column headerText="Categoria" sortBy="#{p.title}">
+                        <b>#{p.nombre}</b><br />
+                        <span class="muted">#{p.description}</span>
+                    </p:column>
+
+                    <p:column headerText="Descripcion" width="200"
+                    >#{p.description}</p:column
+                    >
+                </p:dataTable>
+
+                <p:messages id="msgs" closable="true" />
+            </h:form>
+        </div>
+    </ui:define>
+</ui:composition>
+</html>
