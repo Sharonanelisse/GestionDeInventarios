@@ -25,7 +25,7 @@ public class MovimientoService {
             }
 
             if (movimiento.getTipo() == TipoMovimiento.SALIDA) {
-                if (!producto.getActivo()) {
+                if (!producto.isActivo()) {
                     throw new IllegalArgumentException("No se puede registrar salida de un producto inactivo");
                 }
                 if (producto.getStockActual() - movimiento.getCantidad() < 0) {

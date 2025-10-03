@@ -1,0 +1,33 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                xmlns:p="http://primefaces.org/ui">
+    <h:form id="productoForm">
+        <p:panelGrid columns="2" columnClasses="label,field">
+            <h:outputLabel for="nombre" value="Nombre:"/>
+            <p:inputText id="nombre" value="#{productoController.productoSeleccionado.nombre}" required="true"
+                         requiredMessage="El nombre es obligatorio"/>
+
+            <h:outputLabel for="categoria" value="Categoría:"/>
+            <p:inputText id="categoria" value="#{productoController.productoSeleccionado.categoria.id}" required="true"
+                         requiredMessage="La categoría es obligatoria"/>
+
+            <h:outputLabel for="precio" value="Precio:"/>
+            <p:inputText id="precio" value="#{productoController.productoSeleccionado.precio}" required="true">
+                <f:validateDoubleRange minimum="0" />
+            </p:inputText>
+
+            <h:outputLabel for="stock" value="Stock Actual:"/>
+            <p:inputText id="stock" value="#{productoController.productoSeleccionado.stockActual}" required="true">
+                <f:validateLongRange minimum="0"/>
+            </p:inputText>
+
+            <h:outputLabel for="activo" value="Activo:"/>
+            <p:selectBooleanCheckbox id="activo" value="#{productoController.productoSeleccionado.activo}"/>
+        </p:panelGrid>
+
+        <p:commandButton value="Guardar" action="#{productoController.guardar}" update=":tablaProductos, @form"
+                         oncomplete="PF('dlgProducto').hide()"/>
+        <p:commandButton value="Cancelar" onclick="PF('dlgProducto').hide()" type="button"/>
+    </h:form>
+</ui:composition>
