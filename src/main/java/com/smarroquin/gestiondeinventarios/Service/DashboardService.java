@@ -90,7 +90,7 @@ public class DashboardService {
             CriteriaQuery<LocalDateTime> cq = cb.createQuery(LocalDateTime.class);
             Root<Movimiento> root = cq.from(Movimiento.class);
 
-            cq.select(cb.greatest(root.get("fecha"))); // MAX(fecha)
+            cq.select(cb.greatest(root.<LocalDateTime>get("fecha"))); // MAX(fecha)
 
             return em.createQuery(cq).getSingleResult();
         } finally {

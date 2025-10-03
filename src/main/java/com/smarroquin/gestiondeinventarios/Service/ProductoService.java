@@ -106,10 +106,10 @@ public class ProductoService {
         if (producto.getNombre() == null || producto.getNombre().isEmpty()) {
             throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
         }
-        if (producto.getPrecio() == null || producto.getPrecio() < 0) {
+        if (producto.getPrecio() < 0 || producto.getPrecio() < 0) {
             throw new IllegalArgumentException("El precio no puede ser negativo");
         }
-        if (producto.getStockActual() == null || producto.getStockActual() < 0) {
+        if (producto.getStockActual() < 0 || producto.getStockActual() < 0) {
             throw new IllegalArgumentException("El stock no puede ser negativo");
         }
     }

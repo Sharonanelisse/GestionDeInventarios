@@ -1,8 +1,6 @@
 package com.smarroquin.gestiondeinventarios.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-
 import java.time.LocalDateTime;
 
 @Entity
@@ -13,58 +11,50 @@ public class Producto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull(message = "El nombre no puede estar vacío")
     @Column(nullable = false)
     private String nombre;
 
-    @Min(value = 0, message = "El precio no puede ser negativo")
-    @Column(nullable = false)
-    private Double precio;
-
-    @Min(value = 0, message = "El stock no puede ser negativo")
-    @Column(nullable = false)
-    private Integer stockActual = 0;
-
-    @Column(nullable = false)
-    private boolean activo = true;
-
-    @Column(nullable = false, updatable = false)
-    private LocalDateTime fechaCreacion = LocalDateTime.now();
-
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "categoria_id")
+    @ManyToOne
+    @JoinColumn(name = "categoria_id", nullable = false)
     private Categoria categoria;
 
-    public Producto() {}
+    @Column(nullable = false)
+    private double precio;
 
-    public Producto(Long id, String nombre, Double precio, Integer stockActual) {
-        this.id = id;
-        this.nombre = nombre;
-        this.precio = precio;
-        this.stockActual = stockActual;
-        this.activo = true;
-        this.fechaCreacion = LocalDateTime.now();
-        this.categoria = new Categoria();
-    }
+    @Column(nullable = false)
+    private int stockActual;
 
-    public Long getId() {return id;}
-    public void setId(Long id) {this.id = id;}
+    @Column(nullable = false)
+    private boolean activo;
 
-    public String getNombre() {return nombre;}
-    public void setNombre(String nombre) {this.nombre = nombre;}
+    @Column(name = "fecha_creacion", nullable = false)
+    private LocalDateTime fechaCreacion;
 
-    public Double getPrecio() {return precio;}
-    public void setPrecio(Double precio) {this.precio = precio;}
+    @Column(name = "fecha_actualizacion")
+    private LocalDateTime fechaActualizacion;
 
-    public Integer getStockActual() {return stockActual;}
-    public void setStockActual(Integer stockActual) {this.stockActual = stockActual;}
+    // Getters y Setters
+    public Long getId() { return id; }
+    public void setId(Long id) { this.id = id; }
 
-    public boolean getActivo() {return activo;}
-    public void setActivo(boolean activo) {this.activo = activo;}
+    public String getNombre() { return nombre; }
+    public void setNombre(String nombre) { this.nombre = nombre; }
 
-    public LocalDateTime getFechaCreacion() {return fechaCreacion;}
-    public void setFechaCreacion(LocalDateTime fechaCreacion) {this.fechaCreacion = fechaCreacion;}
+    public Categoria getCategoria() { return categoria; }
+    public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
-    public Categoria getCategoria() {return categoria;}
-    public void setCategoria(Categoria categoria) {this.categoria = categoria;}
+    public double getPrecio() { return precio; }
+    public void setPrecio(double precio) { this.precio = precio; }
+
+    public int getStockActual() { return stockActual; }
+    public void setStockActual(int stockActual) { this.stockActual = stockActual; }
+
+    public boolean isActivo() { return activo; }
+    public void setActivo(boolean activo) { this.activo = activo; }
+
+    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+
+    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
+    public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
 }

@@ -1,64 +1,36 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
+
+    <!-- Producción: PostgreSQL -->
     <persistence-unit name="GestionDeInventarios" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
-            <!-- Conexión -->
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/gestionInventarios"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
             <property name="jakarta.persistence.jdbc.password" value="admin123"/>
-
-            <!-- Hibernate -->
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
-            <property name="hibernate.format_sql" value="true"/>
-
-            <!-- Configuración optimizada para el sistema de hospital -->
-            <property name="hibernate.jdbc.batch_size" value="50"/>
-            <property name="hibernate.order_inserts" value="true"/>
-            <property name="hibernate.order_updates" value="true"/>
-            <property name="hibernate.connection.autocommit" value="false"/>
-            <property name="hibernate.id.new_generator_mappings" value="true"/>
-
-            <!-- Configuración adicional para integridad referencial -->
-            <property name="hibernate.jdbc.use_scrollable_resultset" value="true"/>
-            <property name="hibernate.connection.provider_disables_autocommit" value="true"/>
-
-            <!-- Configuración de pool de conexiones -->
-            <property name="hibernate.connection.pool_size" value="10"/>
-
-            <!-- Configuración de logging para producción -->
-            <property name="hibernate.generate_statistics" value="false"/>
-            <property name="hibernate.use_sql_comments" value="false"/>
         </properties>
     </persistence-unit>
 
-    <!-- Persistence unit para pruebas -->
-    <persistence-unit name="HospitalSystemTestPU" transaction-type="RESOURCE_LOCAL">
+    <!-- Test: H2 en memoria -->
+    <persistence-unit name="GestionDeInventariosTestPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
-            <!-- Conexión para pruebas -->
-            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/sistema_hospital_test"/>
-            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
-            <property name="jakarta.persistence.jdbc.password" value="admin123"/>
-
-            <!-- Hibernate para pruebas -->
-            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
+            <property name="jakarta.persistence.jdbc.user" value="sa"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
             <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
-            <property name="hibernate.show_sql" value="false"/>
-            <property name="hibernate.format_sql" value="false"/>
-
-            <!-- Configuración optimizada para pruebas -->
-            <property name="hibernate.jdbc.batch_size" value="10"/>
-            <property name="hibernate.order_inserts" value="true"/>
-            <property name="hibernate.order_updates" value="true"/>
-            <property name="hibernate.connection.autocommit" value="false"/>
-            <property name="hibernate.id.new_generator_mappings" value="true"/>
+            <property name="hibernate.show_sql" value="true"/>
         </properties>
     </persistence-unit>
+
 </persistence>
