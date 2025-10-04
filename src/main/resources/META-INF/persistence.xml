@@ -7,6 +7,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
+            <property name="hibernate.connection.datasource" value=""/>
             <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/gestionInventarios"/>
             <property name="jakarta.persistence.jdbc.user" value="postgres"/>
@@ -23,6 +24,7 @@
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
 
         <properties>
+            <property name="hibernate.connection.datasource" value=""/>
             <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
             <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
             <property name="jakarta.persistence.jdbc.user" value="sa"/>

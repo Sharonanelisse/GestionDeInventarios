@@ -110,3 +110,4 @@ public class DashboardController implements Serializable {
         movimientosPorTipoChart.setShowDataLabels(true);
         movimientosPorTipoChart.setFill(true);
     }
+}
