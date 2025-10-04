@@ -3,7 +3,7 @@ package com.smarroquin.gestiondeinventarios.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "movimientos")
@@ -26,7 +26,7 @@ public class Movimiento {
     private String motivo;
 
     @Column(nullable = false)
-    private LocalDateTime fecha = LocalDateTime.now();
+    private LocalDate fecha = LocalDate.now();
 
     @ManyToOne(optional = false)
     @JoinColumn(name = "producto_id")
@@ -34,7 +34,7 @@ public class Movimiento {
 
     public Movimiento() {}
 
-    public Movimiento(Long id, TipoMovimiento tipo, Integer cantidad, String motivo, LocalDateTime fecha) {
+    public Movimiento(Long id, TipoMovimiento tipo, Integer cantidad, String motivo, LocalDate fecha) {
         this.id = id;
         this.tipo = tipo;
         this.cantidad = cantidad;
@@ -54,8 +54,8 @@ public class Movimiento {
     public String getMotivo() {return motivo;}
     public void setMotivo(String motivo) {this.motivo = motivo;}
 
-    public LocalDateTime getFecha() {return fecha;}
-    public void setFecha(LocalDateTime fecha) {this.fecha = fecha;}
+    public LocalDate getFecha() {return fecha;}
+    public void setFecha(LocalDate fecha) {this.fecha = fecha;}
 
     public Producto getProducto() {return producto;}
     public void setProducto(Producto producto) {this.producto = producto;}

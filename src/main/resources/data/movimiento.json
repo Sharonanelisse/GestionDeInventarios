@@ -1,0 +1,77 @@
+[
+  {
+    "tipo": "ENTRADA",
+    "cantidad": 5,
+    "motivo": "Compra",
+    "fecha": "2025-09-11",
+    "productoId": 1
+  },
+  {
+    "tipo": "SALIDA",
+    "cantidad": 2,
+    "motivo": "Venta",
+    "fecha": "2025-09-13",
+    "productoId": 1
+  },
+
+  {
+    "tipo": "ENTRADA",
+    "cantidad": 4,
+    "motivo": "Compra",
+    "fecha": "2025-09-11",
+    "productoId": 2
+  },
+  {
+    "tipo": "SALIDA",
+    "cantidad": 1,
+    "motivo": "Venta",
+    "fecha": "2025-09-10",
+    "productoId": 2
+  },
+
+  {
+    "tipo": "ENTRADA",
+    "cantidad": 2,
+    "motivo": "Compra",
+    "fecha": "2025-09-11",
+    "productoId": 3
+  },
+  {
+    "tipo": "SALIDA",
+    "cantidad": 3,
+    "motivo": "Venta",
+    "fecha": "2025-09-10",
+    "productoId": 3
+  },
+
+  {
+    "tipo": "ENTRADA",
+    "cantidad": 5,
+    "motivo": "Compra",
+    "fecha": "2025-09-11",
+    "productoId": 4
+  },
+  {
+    "tipo": "SALIDA",
+    "cantidad": 3,
+    "motivo": "Venta",
+    "fecha": "2025-09-10",
+    "productoId": 4
+  },
+
+  {
+    "tipo": "ENTRADA",
+    "cantidad": 3,
+    "motivo": "Compra",
+    "fecha": "2025-09-11",
+    "productoId": 5
+  },
+
+  {
+    "tipo": "SALIDA",
+    "cantidad": 5,
+    "motivo": "Venta",
+    "fecha": "2025-09-11",
+    "productoId": 6
+  }
+]

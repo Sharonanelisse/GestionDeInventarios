@@ -6,7 +6,7 @@ import com.smarroquin.gestiondeinventarios.models.TipoMovimiento;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,7 +36,7 @@ public class MovimientoService {
                 producto.setStockActual(producto.getStockActual() + movimiento.getCantidad());
             }
 
-            movimiento.setFecha(LocalDateTime.now());
+            movimiento.setFecha(LocalDate.now());
             movimiento.setProducto(producto);
 
             em.persist(movimiento);
@@ -62,7 +62,7 @@ public class MovimientoService {
         }
     }
 
-    public List<Movimiento> filtrar(Long productoId, TipoMovimiento tipo, LocalDateTime desde, LocalDateTime hasta) {
+    public List<Movimiento> filtrar(Long productoId, TipoMovimiento tipo, LocalDate desde, LocalDate hasta) {
         EntityManager em = emf.createEntityManager();
         try {
             CriteriaBuilder cb = em.getCriteriaBuilder();

@@ -1,0 +1,56 @@
+[
+  {
+    "nombre": "Laptop Dell",
+    "categoriaNombre": "Electrónica",
+    "precio": 1500,
+    "stockActual": 5,
+    "activo": true,
+    "fechaCreacion": "2025-08-10",
+    "fechaActualizacion": "2025-09-10"
+  },
+  {
+    "nombre": "Ipad 11 generacion",
+    "categoriaNombre": "Electrónica",
+    "precio": 1700,
+    "stockActual": 10,
+    "activo": true,
+    "fechaCreacion": "2025-08-10",
+    "fechaActualizacion": "2025-08-15"
+  },
+  {
+    "nombre": "Sillon reclinable",
+    "categoriaNombre": "Hogar y Muebles",
+    "precio": 1000,
+    "stockActual": 20,
+    "activo": true,
+    "fechaCreacion": "2025-08-10",
+    "fechaActualizacion": "2025-09-01"
+  },
+  {
+    "nombre": "Mesa de comedor",
+    "categoriaNombre": "Hogar y Muebles",
+    "precio": 2100,
+    "stockActual": 7,
+    "activo": true,
+    "fechaCreacion": "2025-09-01",
+    "fechaActualizacion": "2025-09-10"
+  },
+  {
+    "nombre": "Monopoli Juego de mesa",
+    "categoriaNombre": "Juguetes y Entretenimiento",
+    "precio": 200,
+    "stockActual": 15,
+    "activo": true,
+    "fechaCreacion": "2025-08-10",
+    "fechaActualizacion": "2025-09-15"
+  },
+  {
+    "nombre": "Carro control remoto" ,
+    "categoriaNombre": "Juguetes y Entretenimiento",
+    "precio": 550,
+    "stockActual": 13,
+    "activo": true,
+    "fechaCreacion": "2025-08-10",
+    "fechaActualizacion": "2025-09-10"
+  }
+]

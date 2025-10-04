@@ -1,4 +1,4 @@
-package com.smarroquin.gestiondeinventarios.service;
+package com.smarroquin.gestiondeinventarios.Service;
 
 import com.smarroquin.gestiondeinventarios.models.Categoria;
 import com.smarroquin.gestiondeinventarios.models.Movimiento;
@@ -6,9 +6,13 @@ import com.smarroquin.gestiondeinventarios.models.Producto;
 
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
-
+import jakarta.enterprise.context.ApplicationScoped;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
+@ApplicationScoped
 public class DashboardService {
 
     private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
@@ -21,6 +25,47 @@ public class DashboardService {
             Root<Producto> root = cq.from(Producto.class);
             cq.select(cb.count(root));
             return em.createQuery(cq).getSingleResult();
+        } finally {
+            em.close();
+        }
+    }
+
+    public Map<String, Integer> productosPorCategoria() {
+        EntityManager em = emf.createEntityManager();
+        try {
+            // Consulta: contar productos agrupados por nombre de categoría
+            List<Object[]> resultados = em.createQuery(
+                    "SELECT p.categoria.nombre, COUNT(p) FROM Producto p GROUP BY p.categoria.nombre",
+                    Object[].class
+            ).getResultList();
+
+            Map<String, Integer> datos = new HashMap<>();
+            for (Object[] fila : resultados) {
+                String categoria = (String) fila[0];
+                Long cantidad = (Long) fila[1];
+                datos.put(categoria, cantidad.intValue());
+            }
+            return datos;
+        } finally {
+            em.close();
+        }
+    }
+
+    public Map<String, Integer> movimientosPorTipo() {
+        EntityManager em = emf.createEntityManager();
+        try {
+              List<Object[]> resultados = em.createQuery(
+                    "SELECT m.tipo, COUNT(m) FROM Movimiento m GROUP BY m.tipo",
+                    Object[].class
+            ).getResultList();
+
+            Map<String, Integer> datos = new HashMap<>();
+            for (Object[] fila : resultados) {
+                String tipo = (String) fila[0];
+                Long cantidad = (Long) fila[1];
+                datos.put(tipo, cantidad.intValue());
+            }
+            return datos;
         } finally {
             em.close();
         }
@@ -88,8 +133,11 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<LocalDateTime> cq = cb.createQuery(LocalDateTime.class);
             Root<Movimiento> root = cq.from(Movimiento.class);
-            cq.select(cb.greatest(root.get("fecha"))); // MAX(fecha)
-            return em.createQuery(cq).getSingleResult();
+
+            cq.select(root.get("fecha"));
+            cq.orderBy(cb.desc(root.get("fecha")));
+
+            return em.createQuery(cq).setMaxResults(1).getSingleResult();
         } finally {
             em.close();
         }
