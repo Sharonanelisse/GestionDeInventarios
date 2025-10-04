@@ -1,8 +1,9 @@
-package com.smarroquin.gestiondeinventarios.Service;
+package com.smarroquin.gestiondeinventarios.service;
 
 import com.smarroquin.gestiondeinventarios.models.Categoria;
 import com.smarroquin.gestiondeinventarios.models.Movimiento;
 import com.smarroquin.gestiondeinventarios.models.Producto;
+
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
 
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 
 public class DashboardService {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
+    private final EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
 
     public long totalProductos() {
         EntityManager em = emf.createEntityManager();
@@ -45,7 +46,7 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Long> cq = cb.createQuery(Long.class);
             Root<Producto> root = cq.from(Producto.class);
-          cq.select(cb.count(root))
+            cq.select(cb.count(root))
                     .where(cb.isFalse(root.get("activo")));
             return em.createQuery(cq).getSingleResult();
         } finally {
@@ -73,10 +74,8 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<Long> cq = cb.createQuery(Long.class);
             Root<Movimiento> root = cq.from(Movimiento.class);
-
             cq.select(cb.count(root))
                     .where(cb.greaterThanOrEqualTo(root.get("fecha"), hace7dias));
-
             return em.createQuery(cq).getSingleResult();
         } finally {
             em.close();
@@ -89,9 +88,7 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<LocalDateTime> cq = cb.createQuery(LocalDateTime.class);
             Root<Movimiento> root = cq.from(Movimiento.class);
-
-            cq.select(cb.greatest(root.<LocalDateTime>get("fecha"))); // MAX(fecha)
-
+            cq.select(cb.greatest(root.get("fecha"))); // MAX(fecha)
             return em.createQuery(cq).getSingleResult();
         } finally {
             em.close();

@@ -1,61 +1,112 @@
 package com.smarroquin.gestiondeinventarios.controllers;
 
-import com.smarroquin.gestiondeinventarios.models.Producto;
-import com.smarroquin.gestiondeinventarios.models.Movimiento;
-import jakarta.persistence.*;
+import com.smarroquin.gestiondeinventarios.service.DashboardService;
 
+import jakarta.annotation.PostConstruct;
+import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Named;
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
-public class DashboardController {
+import org.primefaces.model.chart.BarChartModel;
+import org.primefaces.model.chart.ChartSeries;
+import org.primefaces.model.chart.PieChartModel;
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
+@Named
+@ViewScoped
+public class DashboardController implements Serializable {
 
-    public long totalProductos() {
-        EntityManager em = emf.createEntityManager();
-        long count = em.createQuery("SELECT COUNT(p) FROM Producto p", Long.class).getSingleResult();
-        em.close();
-        return count;
+    private DashboardService dashboardService;
+
+    private long totalProductos;
+    private long productosStockBajo;
+    private long productosInactivos;
+    private long totalCategorias;
+    private long movimientosSemana;
+    private LocalDateTime ultimaActualizacion;
+
+    private BarChartModel productosPorCategoriaChart;
+    private PieChartModel movimientosPorTipoChart;
+
+    @PostConstruct
+    public void init() {
+        dashboardService = new DashboardService(); // Si usas CDI, puedes inyectarlo con @Inject
+
+        totalProductos = dashboardService.totalProductos();
+        productosStockBajo = dashboardService.productosStockBajo(10); // umbral configurable
+        productosInactivos = dashboardService.productosInactivos();
+        totalCategorias = dashboardService.totalCategorias();
+        movimientosSemana = dashboardService.movimientosSemana();
+        ultimaActualizacion = dashboardService.ultimaActualizacion();
+
+        crearGraficoProductosPorCategoria();
+        crearGraficoMovimientosPorTipo();
     }
 
-    public long productosStockBajo(int umbral) {
-        EntityManager em = emf.createEntityManager();
-        long count = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.stockActual < :umbral", Long.class)
-                .setParameter("umbral", umbral)
-                .getSingleResult();
-        em.close();
-        return count;
+    // Getters para la vista
+    public long getTotalProductos() {
+        return totalProductos;
     }
 
-    public long productosInactivos() {
-        EntityManager em = emf.createEntityManager();
-        long count = em.createQuery("SELECT COUNT(p) FROM Producto p WHERE p.activo = false", Long.class)
-                .getSingleResult();
-        em.close();
-        return count;
+    public long getProductosStockBajo() {
+        return productosStockBajo;
     }
 
-    public long totalCategorias() {
-        EntityManager em = emf.createEntityManager();
-        long count = em.createQuery("SELECT COUNT(c) FROM Categoria c", Long.class).getSingleResult();
-        em.close();
-        return count;
+    public long getProductosInactivos() {
+        return productosInactivos;
     }
 
-    public long movimientosSemana() {
-        EntityManager em = emf.createEntityManager();
-        LocalDateTime hace7dias = LocalDateTime.now().minusDays(7);
-        long count = em.createQuery("SELECT COUNT(m) FROM Movimiento m WHERE m.fecha >= :desde", Long.class)
-                .setParameter("desde", hace7dias)
-                .getSingleResult();
-        em.close();
-        return count;
+    public long getTotalCategorias() {
+        return totalCategorias;
     }
 
-    public LocalDateTime ultimaActualizacion() {
-        EntityManager em = emf.createEntityManager();
-        LocalDateTime fecha = em.createQuery("SELECT MAX(m.fecha) FROM Movimiento m", LocalDateTime.class)
-                .getSingleResult();
-        em.close();
-        return fecha;
+    public long getMovimientosSemana() {
+        return movimientosSemana;
     }
-}
+
+    public LocalDateTime getUltimaActualizacion() {
+        return ultimaActualizacion;
+    }
+
+    public BarChartModel getProductosPorCategoriaChart() {
+        return productosPorCategoriaChart;
+    }
+
+    public PieChartModel getMovimientosPorTipoChart() {
+        return movimientosPorTipoChart;
+    }
+
+    // Métodos para construir los gráficos
+    private void crearGraficoProductosPorCategoria() {
+        productosPorCategoriaChart = new BarChartModel();
+
+        ChartSeries productos = new ChartSeries();
+        productos.setLabel("Productos");
+
+        // Datos simulados - reemplaza con datos reales si lo deseas
+        productos.set("Electrónica", 120);
+        productos.set("Ropa", 80);
+        productos.set("Alimentos", 150);
+        productos.set("Hogar", 60);
+        productos.set("Libros", 40);
+
+        productosPorCategoriaChart.addSeries(productos);
+        productosPorCategoriaChart.setTitle("Productos por Categoría");
+        productosPorCategoriaChart.setLegendPosition("ne");
+        productosPorCategoriaChart.setAnimate(true);
+        productosPorCategoriaChart.setShowPointLabels(true);
+    }
+
+    private void crearGraficoMovimientosPorTipo() {
+        movimientosPorTipoChart = new PieChartModel();
+
+        // Datos simulados - reemplaza con datos reales si lo deseas
+        movimientosPorTipoChart.set("Entrada", 200);
+        movimientosPorTipoChart.set("Salida", 180);
+        movimientosPorTipoChart.set("Ajuste", 20);
+
+        movimientosPorTipoChart.setTitle("Movimientos por Tipo");
+        movimientosPorTipoChart.setLegendPosition("w");
+        movimientosPorTipoChart.setShowDataLabels(true);
+        movimientosPorTipoChart.setFill(true);
+    }

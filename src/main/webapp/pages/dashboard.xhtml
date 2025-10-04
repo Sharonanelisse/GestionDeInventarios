@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+<h:head>
+    <title>Dashboard - Gestión de Inventarios</title>
+</h:head>
+<h:body>
+    <h:form>
+        <p:panel header="Dashboard de Inventario" style="margin:20px">
+            <p:panelGrid columns="3" styleClass="ui-panelgrid-blank" style="text-align:center">
+
+                <p:panel header="Total de Productos">
+                    <h:outputText value="#{dashboardController.totalProductos}" style="font-size:24px"/>
+                </p:panel>
+
+                <p:panel header="Stock Bajo (&lt; 10)">
+                    <h:outputText value="#{dashboardController.productosStockBajo}" style="font-size:24px"/>
+                </p:panel>
+
+                <p:panel header="Productos Inactivos">
+                    <h:outputText value="#{dashboardController.productosInactivos}" style="font-size:24px"/>
+                </p:panel>
+
+                <p:panel header="Total de Categorías">
+                    <h:outputText value="#{dashboardController.totalCategorias}" style="font-size:24px"/>
+                </p:panel>
+
+                <p:panel header="Movimientos esta semana">
+                    <h:outputText value="#{dashboardController.movimientosSemana}" style="font-size:24px"/>
+                </p:panel>
+
+                <p:panel header="Última actualización">
+                    <h:outputText value="#{dashboardController.ultimaActualizacion}" style="font-size:18px">
+                        <f:convertDateTime pattern="dd/MM/yyyy HH:mm"/>
+                    </h:outputText>
+                </p:panel>
+
+            </p:panelGrid>
+
+            <p:separator/>
+
+            <p:panel header="Gráfico de Productos por Categoría" style="margin-top:20px">
+                <p:barChart model="#{dashboardController.productosPorCategoriaChart}" style="height:300px"/>
+            </p:panel>
+
+            <p:panel header="Gráfico de Movimientos por Tipo" style="margin-top:20px">
+                <p:pieChart model="#{dashboardController.movimientosPorTipoChart}" style="height:300px"/>
+            </p:panel>
+
+        </p:panel>
+    </h:form>
+</h:body>
+</html>
