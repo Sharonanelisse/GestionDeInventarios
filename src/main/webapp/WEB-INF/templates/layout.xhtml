@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html
         xmlns="http://www.w3.org/1999/xhtml"
         xmlns:h="http://xmlns.jcp.org/jsf/html"
         xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
         xmlns:f="http://xmlns.jcp.org/jsf/core"
+        xmlns:p="http://primefaces.org/ui"
 >
 <h:head>
     <title>Gestor de Inventarios</title>
@@ -38,20 +38,20 @@
         <div class="card" style="margin-bottom: 1rem">
             <p:menubar>
                 <p:menuitem
-                        value="Lista de Categorias"
+                        value="Lista de Categorías"
                         outcome="/pages/category.xhtml"
                         icon="bi bi-list"
                 />
                 <p:menuitem
-                        value="Lista de Categorias"
+                        value="Stock"
                         outcome="/pages/stock.xhtml"
                         icon="bi bi-receipt"
-
                 />
+
                 <p:menuitem
                         value="Dashboard"
-                        outcome="" //aqui agregan el dashboard que hizo Josimar *//
-                        icon="" // el icono que le quieran dar ( que sea de boostrap ) //
+                        outcome="/pages/dashboard.xhtml"
+                        icon="bi bi-bar-chart"
                 />
             </p:menubar>
         </div>
@@ -61,3 +61,4 @@
     </div>
 </h:body>
 </html>
+

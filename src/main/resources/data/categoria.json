@@ -1,0 +1,14 @@
+[
+  {
+    "nombre": "Electrónica",
+    "descripcion": "Productos tecnológicos"
+  },
+  {
+    "nombre": "Hogar y Muebles",
+    "descripcion": "Artículos para el hogar"
+  },
+  {
+    "nombre": "Juguetes y Entretenimiento",
+    "descripcion": "Artículos de hobby y ocio"
+  }
+]

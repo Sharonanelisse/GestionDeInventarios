@@ -1,116 +1,76 @@
 package com.smarroquin.gestiondeinventarios.Service;
 
 import com.smarroquin.gestiondeinventarios.models.Producto;
-import jakarta.persistence.*;
-import jakarta.persistence.criteria.*;
-
-import java.time.LocalDateTime;
-import java.util.ArrayList;
+import jakarta.ejb.Stateless;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
+import java.io.Serializable;
 import java.util.List;
-import java.util.Optional;
 
-public class ProductoService {
+@Stateless
+public class ProductoService implements Serializable {
 
-    private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
+    private static final long serialVersionUID = 1L;
 
-    public Producto crear(Producto producto) {
-        validarProducto(producto);
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
+    @PersistenceContext(unitName = "InventarioPU")
+    private EntityManager em;
+
+    public List<Producto> listarTodos() {
+        return em.createQuery("SELECT p FROM Producto p", Producto.class).getResultList();
+    }
+
+    public void guardar(Producto producto) {
+        if (producto.getId() == null) {
             em.persist(producto);
-            em.getTransaction().commit();
-            return producto;
-        } finally {
-            em.close();
+        } else {
+            em.merge(producto);
         }
     }
 
-    public Producto actualizar(Producto producto) {
-        validarProducto(producto);
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            Producto actualizado = em.merge(producto);
-            em.getTransaction().commit();
-            return actualizado;
-        } finally {
-            em.close();
+    public List<Producto> buscarConFiltros(String nombre, String categoria,
+                                           Double precioMin, Double precioMax,
+                                           Boolean activo, java.util.Date desde, java.util.Date hasta) {
+        StringBuilder jpql = new StringBuilder("SELECT p FROM Producto p WHERE 1=1");
+
+        if (nombre != null && !nombre.isEmpty()) {
+            jpql.append(" AND LOWER(p.nombre) LIKE LOWER(CONCAT('%', :nombre, '%'))");
         }
+        if (categoria != null && !categoria.isEmpty()) {
+            jpql.append(" AND LOWER(p.categoria.nombre) LIKE LOWER(CONCAT('%', :categoria, '%'))");
+        }
+        if (precioMin != null) {
+            jpql.append(" AND p.precio >= :precioMin");
+        }
+        if (precioMax != null) {
+            jpql.append(" AND p.precio <= :precioMax");
+        }
+        if (activo != null) {
+            jpql.append(" AND p.activo = :activo");
+        }
+        if (desde != null) {
+            jpql.append(" AND p.fechaCreacion >= :desde");
+        }
+        if (hasta != null) {
+            jpql.append(" AND p.fechaCreacion <= :hasta");
+        }
+
+        var query = em.createQuery(jpql.toString(), Producto.class);
+
+        if (nombre != null && !nombre.isEmpty()) query.setParameter("nombre", nombre);
+        if (categoria != null && !categoria.isEmpty()) query.setParameter("categoria", categoria);
+        if (precioMin != null) query.setParameter("precioMin", precioMin);
+        if (precioMax != null) query.setParameter("precioMax", precioMax);
+        if (activo != null) query.setParameter("activo", activo);
+        if (desde != null) query.setParameter("desde", desde);
+        if (hasta != null) query.setParameter("hasta", hasta);
+
+        return query.getResultList();
     }
 
     public void eliminar(Long id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            em.getTransaction().begin();
-            Producto p = em.find(Producto.class, id);
-            if (p != null) {
-                em.remove(p);
-            }
-            em.getTransaction().commit();
-        } finally {
-            em.close();
-        }
-    }
-
-    public Optional<Producto> buscarPorId(Long id) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            return Optional.ofNullable(em.find(Producto.class, id));
-        } finally {
-            em.close();
-        }
-    }
-
-    public List<Producto> buscarConFiltros(String nombre, Long categoriaId, Double precioMin, Double precioMax,
-                                           Boolean activo, LocalDateTime desde, LocalDateTime hasta) {
-        EntityManager em = emf.createEntityManager();
-        try {
-            CriteriaBuilder cb = em.getCriteriaBuilder();
-            CriteriaQuery<Producto> cq = cb.createQuery(Producto.class);
-            Root<Producto> root = cq.from(Producto.class);
-
-            List<Predicate> predicates = new ArrayList<>();
-
-            if (nombre != null && !nombre.isEmpty()) {
-                predicates.add(cb.like(cb.lower(root.get("nombre")), "%" + nombre.toLowerCase() + "%"));
-            }
-            if (categoriaId != null) {
-                predicates.add(cb.equal(root.get("categoria").get("id"), categoriaId));
-            }
-            if (precioMin != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("precio"), precioMin));
-            }
-            if (precioMax != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("precio"), precioMax));
-            }
-            if (activo != null) {
-                predicates.add(cb.equal(root.get("activo"), activo));
-            }
-            if (desde != null) {
-                predicates.add(cb.greaterThanOrEqualTo(root.get("fechaCreacion"), desde));
-            }
-            if (hasta != null) {
-                predicates.add(cb.lessThanOrEqualTo(root.get("fechaCreacion"), hasta));
-            }
-
-            cq.where(predicates.toArray(new Predicate[0]));
-
-            return em.createQuery(cq).getResultList();
-        } finally {
-            em.close();
-        }
-    }
-
-    private void validarProducto(Producto producto) {
-        if (producto.getNombre() == null || producto.getNombre().isEmpty()) {
-            throw new IllegalArgumentException("El nombre del producto no puede estar vacío");
-        }
-        if (producto.getPrecio() < 0 || producto.getPrecio() < 0) {
-            throw new IllegalArgumentException("El precio no puede ser negativo");
-        }
-        if (producto.getStockActual() < 0 || producto.getStockActual() < 0) {
-            throw new IllegalArgumentException("El stock no puede ser negativo");
+        Producto p = em.find(Producto.class, id);
+        if (p != null) {
+            em.remove(p);
         }
     }
 }

@@ -15,34 +15,34 @@
                 <p:messages id="msgs" closable="true" />
                 <p:panelGrid columns="2" style="margin-bottom:1rem">
                     <p:outputLabel value="Producto" for="producto" />
-                    <p:selectOneMenu id="producto" value="#{movimientoController.movimiento.producto}" required="true">
-                        <f:selectItems value="#{movimientoController.productos}" var="prod" itemValue="#{prod}" itemLabel="#{prod.nombre}" />
+                    <p:selectOneMenu id="producto" value="#{MovimientoController.movimiento.producto}" required="true">
+                        <f:selectItems value="#{MovimientoController.productos}" var="prod" itemValue="#{prod}" itemLabel="#{prod.nombre}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Tipo" for="tipo" />
-                    <p:selectOneMenu id="tipo" value="#{movimientoController.movimiento.tipo}" required="true">
-                        <f:selectItems value="#{movimientoController.tipos}" var="t" itemValue="#{t}" itemLabel="#{t}" />
+                    <p:selectOneMenu id="tipo" value="#{MovimientoController.movimiento.tipo}" required="true">
+                        <f:selectItems value="#{MovimientoController.tipos}" var="t" itemValue="#{t}" itemLabel="#{t}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Cantidad" for="cantidad" />
-                    <p:inputText id="cantidad" value="#{movimientoController.movimiento.cantidad}" required="true" />
+                    <p:inputText id="cantidad" value="#{MovimientoController.movimiento.cantidad}" required="true" />
 
                     <p:outputLabel value="Fecha" for="fecha" />
-                    <p:calendar id="fecha" value="#{movimientoController.movimiento.fecha}" required="true" pattern="yyyy-MM-dd" />
+                    <p:calendar id="fecha" value="#{MovimientoController.movimiento.fecha}" required="true" pattern="yyyy-MM-dd" />
 
                     <p:outputLabel value="Motivo" for="motivo" />
-                    <p:inputText id="motivo" value="#{movimientoController.movimiento.motivo}" required="true" />
+                    <p:inputText id="motivo" value="#{MovimientoController.movimiento.motivo}" required="true" />
                 </p:panelGrid>
-                <p:commandButton value="Registrar" actionListener="#{movimientoController.registrar}" update="msgs table stockActual" icon="pi pi-check" />
-                <h:outputText id="stockActual" value="Stock actual: #{movimientoController.stockActual}" style="margin-left:1rem; font-weight:bold;" />
+                <p:commandButton value="Registrar" actionListener="#{MovimientoController.registrar}" update="msgs table stockActual" icon="pi pi-check" />
+                <h:outputText id="stockActual" value="Stock actual: #{MovimientoController.stockActual}" style="margin-left:1rem; font-weight:bold;" />
             </h:form>
 
             <h:form id="formFiltro">
                 <h3>Filtrar Movimientos</h3>
                 <p:panelGrid columns="4" style="margin-bottom:1rem">
                     <p:outputLabel value="Producto" for="filtroProducto" />
-                    <p:selectOneMenu id="filtroProducto" value="#{movimientoController.filtroProducto}">
-                        <f:selectItems value="#{movimientoController.productos}" var="prod" itemValue="#{prod.id}" itemLabel="#{prod.nombre}" />
+                    <p:selectOneMenu id="filtroProducto" value="#{MovimientoController.filtroProducto}">
+                        <f:selectItems value="#{MovimientoController.productos}" var="prod" itemValue="#{prod.id}" itemLabel="#{prod.nombre}" />
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Tipo" for="filtroTipo" />
@@ -51,18 +51,18 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel value="Desde" for="filtroDesde" />
-                    <p:calendar id="filtroDesde" value="#{movimientoController.filtroDesde}" pattern="yyyy-MM-dd" />
+                    <p:calendar id="filtroDesde" value="#{MovimientoController.filtroDesde}" pattern="yyyy-MM-dd" />
 
                     <p:outputLabel value="Hasta" for="filtroHasta" />
-                    <p:calendar id="filtroHasta" value="#{movimientoController.filtroHasta}" pattern="yyyy-MM-dd" />
+                    <p:calendar id="filtroHasta" value="#{MovimientoController.filtroHasta}" pattern="yyyy-MM-dd" />
                 </p:panelGrid>
-                <p:commandButton value="Filtrar" actionListener="#{movimientoController.filtrar}" update="table" icon="pi pi-filter" />
+                <p:commandButton value="Filtrar" actionListener="#{MovimientoController.filtrar}" update="formTabla:table" icon="pi pi-filter" />
             </h:form>
 
             <h:form id="formTabla">
                 <p:dataTable
                         id="table"
-                        value="#{movimientoController.movimientos}"
+                        value="#{MovimientoController.movimientos}"
                         var="m"
                         paginator="true"
                         rows="10"

@@ -42,11 +42,11 @@
             <p:separator/>
 
             <p:panel header="Gráfico de Productos por Categoría" style="margin-top:20px">
-                <p:barChart model="#{dashboardController.productosPorCategoriaChart}" style="height:300px"/>
+                <p:chart type="bar" model="#{dashboardController.productosPorCategoriaChart}" style="height:300px"/>
             </p:panel>
 
             <p:panel header="Gráfico de Movimientos por Tipo" style="margin-top:20px">
-                <p:pieChart model="#{dashboardController.movimientosPorTipoChart}" style="height:300px"/>
+                <p:chart type="pie" model="#{dashboardController.movimientosPorTipoChart}" style="height:300px"/>
             </p:panel>
 
         </p:panel>

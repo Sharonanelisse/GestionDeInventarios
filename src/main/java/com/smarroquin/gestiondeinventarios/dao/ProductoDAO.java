@@ -4,7 +4,7 @@ import com.smarroquin.gestiondeinventarios.models.Producto;
 import com.smarroquin.gestiondeinventarios.models.Categoria;
 import jakarta.persistence.*;
 import jakarta.persistence.criteria.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 import java.util.List;
 
 public class ProductoDAO {
@@ -14,9 +14,9 @@ public class ProductoDAO {
     public void save(Producto producto) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        producto.setFechaActualizacion(LocalDateTime.now());
+        producto.setFechaActualizacion(LocalDate.now());
         if (producto.getFechaCreacion() == null) {
-            producto.setFechaCreacion(LocalDateTime.now());
+            producto.setFechaCreacion(LocalDate.now());
         }
         em.persist(producto);
         em.getTransaction().commit();
@@ -26,7 +26,7 @@ public class ProductoDAO {
     public Producto update(Producto producto) {
         EntityManager em = emf.createEntityManager();
         em.getTransaction().begin();
-        producto.setFechaActualizacion(LocalDateTime.now());
+        producto.setFechaActualizacion(LocalDate.now());
         Producto updated = em.merge(producto);
         em.getTransaction().commit();
         em.close();
@@ -56,8 +56,8 @@ public class ProductoDAO {
             Double precioMin,
             Double precioMax,
             Boolean activo,
-            LocalDateTime fechaDesde,
-            LocalDateTime fechaHasta,
+            LocalDate fechaDesde,
+            LocalDate fechaHasta,
             int page,
             int pageSize,
             String orderBy,

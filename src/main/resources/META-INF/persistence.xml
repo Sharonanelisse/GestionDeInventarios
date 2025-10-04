@@ -1,38 +1,30 @@
-<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="UTF-8"?>
 <persistence xmlns="https://jakarta.ee/xml/ns/persistence" version="3.0">
-
-    <!-- Producción: PostgreSQL -->
-    <persistence-unit name="GestionDeInventarios" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
-
+    <!-- Unidad para entorno JTA (web app) -->
+    <persistence-unit name="GestionDeInventarios" transaction-type="JTA">
+        <jta-data-source>java:jboss/datasources/PostgreSQLDS</jta-data-source>
         <properties>
-            <property name="hibernate.connection.datasource" value=""/>
-            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/gestionInventarios"/>
-            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
-            <property name="jakarta.persistence.jdbc.password" value="admin123"/>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
             <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>
     </persistence-unit>
 
-    <!-- Test: H2 en memoria -->
-    <persistence-unit name="GestionDeInventariosTestPU" transaction-type="RESOURCE_LOCAL">
-        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
-        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <!-- Unidad para Java SE (pruebas locales) -->
+    <persistence-unit name="gestiondeinventarios" transaction-type="RESOURCE_LOCAL">
+        <class>com.smarroquin.gestiondeinventarios.models.Producto</class>
+        <class>com.smarroquin.gestiondeinventarios.models.Categoria</class>
+        <class>com.smarroquin.gestiondeinventarios.models.Movimiento</class>
 
         <properties>
-            <property name="hibernate.connection.datasource" value=""/>
-            <property name="jakarta.persistence.jdbc.driver" value="org.h2.Driver"/>
-            <property name="jakarta.persistence.jdbc.url" value="jdbc:h2:mem:test;DB_CLOSE_DELAY=-1"/>
-            <property name="jakarta.persistence.jdbc.user" value="sa"/>
-            <property name="jakarta.persistence.jdbc.password" value=""/>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>
-            <property name="hibernate.hbm2ddl.auto" value="create-drop"/>
+            <property name="jakarta.persistence.jdbc.url" value="jdbc:postgresql://localhost:5433/gestionInventarios"/>
+            <property name="jakarta.persistence.jdbc.user" value="postgres"/>
+            <property name="jakarta.persistence.jdbc.password" value="admin123"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
             <property name="hibernate.show_sql" value="true"/>
         </properties>
     </persistence-unit>
-
 </persistence>
+

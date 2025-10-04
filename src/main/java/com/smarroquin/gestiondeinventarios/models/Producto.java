@@ -1,7 +1,7 @@
 package com.smarroquin.gestiondeinventarios.models;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "productos")
@@ -19,19 +19,19 @@ public class Producto {
     private Categoria categoria;
 
     @Column(nullable = false)
-    private double precio;
+    private Double precio;
 
     @Column(nullable = false)
-    private int stockActual;
+    private Integer stockActual;
 
     @Column(nullable = false)
-    private boolean activo;
+    private Boolean activo;
 
     @Column(name = "fecha_creacion", nullable = false)
-    private LocalDateTime fechaCreacion;
+    private LocalDate fechaCreacion;
 
     @Column(name = "fecha_actualizacion")
-    private LocalDateTime fechaActualizacion;
+    private LocalDate fechaActualizacion;
 
     // Getters y Setters
     public Long getId() { return id; }
@@ -43,18 +43,18 @@ public class Producto {
     public Categoria getCategoria() { return categoria; }
     public void setCategoria(Categoria categoria) { this.categoria = categoria; }
 
-    public double getPrecio() { return precio; }
-    public void setPrecio(double precio) { this.precio = precio; }
+    public Double getPrecio() { return precio; }
+    public void setPrecio(Double precio) { this.precio = precio; }
 
-    public int getStockActual() { return stockActual; }
-    public void setStockActual(int stockActual) { this.stockActual = stockActual; }
+    public Integer getStockActual() { return stockActual; }
+    public void setStockActual(Integer stockActual) { this.stockActual = stockActual; }
 
-    public boolean isActivo() { return activo; }
-    public void setActivo(boolean activo) { this.activo = activo; }
+    public Boolean isActivo() { return activo; }
+    public void setActivo(Boolean activo) { this.activo = activo; }
 
-    public LocalDateTime getFechaCreacion() { return fechaCreacion; }
-    public void setFechaCreacion(LocalDateTime fechaCreacion) { this.fechaCreacion = fechaCreacion; }
+    public LocalDate getFechaCreacion() { return fechaCreacion; }
+    public void setFechaCreacion(LocalDate fechaCreacion) { this.fechaCreacion = fechaCreacion; }
 
-    public LocalDateTime getFechaActualizacion() { return fechaActualizacion; }
-    public void setFechaActualizacion(LocalDateTime fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
+    public LocalDate getFechaActualizacion() { return fechaActualizacion; }
+    public void setFechaActualizacion(LocalDate fechaActualizacion) { this.fechaActualizacion = fechaActualizacion; }
 }

@@ -1,21 +1,20 @@
 package com.smarroquin.gestiondeinventarios.controllers;
 
-import com.smarroquin.gestiondeinventarios.service.DashboardService;
+import com.smarroquin.gestiondeinventarios.Service.DashboardService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
+import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-
-import org.primefaces.model.chart.BarChartModel;
-import org.primefaces.model.chart.ChartSeries;
-import org.primefaces.model.chart.PieChartModel;
+import java.util.Map;
 
 @Named
 @ViewScoped
 public class DashboardController implements Serializable {
 
+    @Inject
     private DashboardService dashboardService;
 
     private long totalProductos;
@@ -25,25 +24,9 @@ public class DashboardController implements Serializable {
     private long movimientosSemana;
     private LocalDateTime ultimaActualizacion;
 
-    private BarChartModel productosPorCategoriaChart;
-    private PieChartModel movimientosPorTipoChart;
+    private String productosPorCategoriaChart;
+    private String movimientosPorTipoChart;
 
-    @PostConstruct
-    public void init() {
-        dashboardService = new DashboardService(); // Si usas CDI, puedes inyectarlo con @Inject
-
-        totalProductos = dashboardService.totalProductos();
-        productosStockBajo = dashboardService.productosStockBajo(10); // umbral configurable
-        productosInactivos = dashboardService.productosInactivos();
-        totalCategorias = dashboardService.totalCategorias();
-        movimientosSemana = dashboardService.movimientosSemana();
-        ultimaActualizacion = dashboardService.ultimaActualizacion();
-
-        crearGraficoProductosPorCategoria();
-        crearGraficoMovimientosPorTipo();
-    }
-
-    // Getters para la vista
     public long getTotalProductos() {
         return totalProductos;
     }
@@ -68,46 +51,57 @@ public class DashboardController implements Serializable {
         return ultimaActualizacion;
     }
 
-    public BarChartModel getProductosPorCategoriaChart() {
+    public String getProductosPorCategoriaChart() {
         return productosPorCategoriaChart;
     }
 
-    public PieChartModel getMovimientosPorTipoChart() {
+    public String getMovimientosPorTipoChart() {
         return movimientosPorTipoChart;
     }
 
-    // Métodos para construir los gráficos
     private void crearGraficoProductosPorCategoria() {
-        productosPorCategoriaChart = new BarChartModel();
-
-        ChartSeries productos = new ChartSeries();
-        productos.setLabel("Productos");
-
-        // Datos simulados - reemplaza con datos reales si lo deseas
-        productos.set("Electrónica", 120);
-        productos.set("Ropa", 80);
-        productos.set("Alimentos", 150);
-        productos.set("Hogar", 60);
-        productos.set("Libros", 40);
-
-        productosPorCategoriaChart.addSeries(productos);
-        productosPorCategoriaChart.setTitle("Productos por Categoría");
-        productosPorCategoriaChart.setLegendPosition("ne");
-        productosPorCategoriaChart.setAnimate(true);
-        productosPorCategoriaChart.setShowPointLabels(true);
+        Map<String, Integer> datos = dashboardService.productosPorCategoria();
+        productosPorCategoriaChart = generarModelo(datos, "Productos");
     }
 
     private void crearGraficoMovimientosPorTipo() {
-        movimientosPorTipoChart = new PieChartModel();
+        Map<String, Integer> datos = dashboardService.movimientosPorTipo();
+        movimientosPorTipoChart = generarModelo(datos, null);
+    }
 
-        // Datos simulados - reemplaza con datos reales si lo deseas
-        movimientosPorTipoChart.set("Entrada", 200);
-        movimientosPorTipoChart.set("Salida", 180);
-        movimientosPorTipoChart.set("Ajuste", 20);
+    private String generarModelo(Map<String, Integer> datos, String label) {
+        StringBuilder labels = new StringBuilder("[");
+        StringBuilder values = new StringBuilder("[");
+        for (Map.Entry<String, Integer> entry : datos.entrySet()) {
+            labels.append("\"").append(entry.getKey()).append("\",");
+            values.append(entry.getValue()).append(",");
+        }
+        if (!datos.isEmpty()) {
+            labels.setLength(labels.length() - 1);
+            values.setLength(values.length() - 1);
+        }
+        labels.append("]");
+        values.append("]");
 
-        movimientosPorTipoChart.setTitle("Movimientos por Tipo");
-        movimientosPorTipoChart.setLegendPosition("w");
-        movimientosPorTipoChart.setShowDataLabels(true);
-        movimientosPorTipoChart.setFill(true);
+        if (label != null) {
+            return String.format("""
+            {
+              "labels": %s,
+              "datasets": [{
+                "label": "%s",
+                "data": %s
+              }]
+            }
+            """, labels, label, values);
+        } else {
+            return String.format("""
+            {
+              "labels": %s,
+              "datasets": [{
+                "data": %s
+              }]
+            }
+            """, labels, values);
+        }
     }
 }
