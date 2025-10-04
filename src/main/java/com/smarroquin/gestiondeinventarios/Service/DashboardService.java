@@ -1,4 +1,4 @@
-package com.smarroquin.gestiondeinventarios.service;
+package com.smarroquin.gestiondeinventarios.Service;
 
 import com.smarroquin.gestiondeinventarios.models.Categoria;
 import com.smarroquin.gestiondeinventarios.models.Movimiento;
@@ -88,7 +88,8 @@ public class DashboardService {
             CriteriaBuilder cb = em.getCriteriaBuilder();
             CriteriaQuery<LocalDateTime> cq = cb.createQuery(LocalDateTime.class);
             Root<Movimiento> root = cq.from(Movimiento.class);
-            cq.select(cb.greatest(root.get("fecha"))); // MAX(fecha)
+            Expression<LocalDateTime> fechaExpr = root.get("fecha").as(LocalDateTime.class);
+            cq.select(cb.greatest(fechaExpr));
             return em.createQuery(cq).getSingleResult();
         } finally {
             em.close();

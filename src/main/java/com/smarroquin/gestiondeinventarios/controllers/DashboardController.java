@@ -1,6 +1,6 @@
 package com.smarroquin.gestiondeinventarios.controllers;
 
-import com.smarroquin.gestiondeinventarios.service.DashboardService;
+import com.smarroquin.gestiondeinventarios.Service.DashboardService;
 
 import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
@@ -84,11 +84,11 @@ public class DashboardController implements Serializable {
         productos.setLabel("Productos");
 
         // Datos simulados - reemplaza con datos reales si lo deseas
-        productos.set("Electrónica", 120);
-        productos.set("Ropa", 80);
-        productos.set("Alimentos", 150);
-        productos.set("Hogar", 60);
-        productos.set("Libros", 40);
+        productos.set("Electrónica", Integer.valueOf(120));
+        productos.set("Ropa", Integer.valueOf(80));
+        productos.set("Alimentos", Integer.valueOf(150));
+        productos.set("Hogar", Integer.valueOf(60));
+        productos.set("Libros", Integer.valueOf(40));
 
         productosPorCategoriaChart.addSeries(productos);
         productosPorCategoriaChart.setTitle("Productos por Categoría");
@@ -101,12 +101,13 @@ public class DashboardController implements Serializable {
         movimientosPorTipoChart = new PieChartModel();
 
         // Datos simulados - reemplaza con datos reales si lo deseas
-        movimientosPorTipoChart.set("Entrada", 200);
-        movimientosPorTipoChart.set("Salida", 180);
-        movimientosPorTipoChart.set("Ajuste", 20);
+        movimientosPorTipoChart.set("Entrada", Integer.valueOf(200));
+        movimientosPorTipoChart.set("Salida", Integer.valueOf(180));
+        movimientosPorTipoChart.set("Ajuste", Integer.valueOf(20));
 
         movimientosPorTipoChart.setTitle("Movimientos por Tipo");
         movimientosPorTipoChart.setLegendPosition("w");
         movimientosPorTipoChart.setShowDataLabels(true);
         movimientosPorTipoChart.setFill(true);
     }
+}

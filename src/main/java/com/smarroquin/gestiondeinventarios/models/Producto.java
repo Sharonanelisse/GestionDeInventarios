@@ -50,6 +50,7 @@ public class Producto {
     public void setStockActual(int stockActual) { this.stockActual = stockActual; }
 
     public boolean isActivo() { return activo; }
+    public boolean getActivo() { return activo; } // ← Este es el método que faltaba
     public void setActivo(boolean activo) { this.activo = activo; }
 
     public LocalDateTime getFechaCreacion() { return fechaCreacion; }
