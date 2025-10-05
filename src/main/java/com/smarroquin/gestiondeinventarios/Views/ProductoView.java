@@ -1,47 +1,55 @@
 package com.smarroquin.gestiondeinventarios.Views;
 
+import com.smarroquin.gestiondeinventarios.controllers.ProductoController;
 import com.smarroquin.gestiondeinventarios.models.Producto;
-import com.smarroquin.gestiondeinventarios.Service.ProductoService;
 import jakarta.annotation.PostConstruct;
 import jakarta.enterprise.context.RequestScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Date;
 
 @Named("productoView")
 @RequestScoped
 public class ProductoView implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     private List<Producto> productos;
     private Producto productoSeleccionado;
+
+    // Filtros
     private String nombreFiltro;
     private String categoriaFiltro;
     private Double precioMinFiltro;
     private Double precioMaxFiltro;
     private Boolean activoFiltro;
-    private java.util.Date desdeFiltro;
-    private java.util.Date hastaFiltro;
-    private int pageSize = 10; 
+    private Date desdeFiltro;
+    private Date hastaFiltro;
+
+    private int pageSize = 10;
 
     @Inject
-    private ProductoService productoService;
+    private ProductoController productoController;
 
     @PostConstruct
     public void init() {
         try {
-            System.out.println("ProductoService inyectado: " + productoService);
-            productos = productoService.listarTodos();
+            productos = productoController.listarTodos();
+            System.out.println("ProductoView inicializado correctamente con " + productos.size() + " productos.");
         } catch (Exception e) {
             System.err.println("Error al inicializar ProductoView: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-
     public void buscar() {
-        productos = productoService.buscarConFiltros(nombreFiltro, categoriaFiltro,
-                precioMinFiltro, precioMaxFiltro, activoFiltro, desdeFiltro, hastaFiltro);
+        productos = productoController.buscarConFiltros(
+                nombreFiltro, categoriaFiltro,
+                precioMinFiltro, precioMaxFiltro,
+                activoFiltro, desdeFiltro, hastaFiltro
+        );
     }
 
     public void nuevo() {
@@ -53,16 +61,16 @@ public class ProductoView implements Serializable {
     }
 
     public void guardar() {
-        productoService.guardar(productoSeleccionado);
-        productos = productoService.listarTodos();
+        productoController.guardar(productoSeleccionado);
+        productos = productoController.listarTodos();
     }
 
     public void eliminar(Producto producto) {
-        productoService.eliminar(producto.getId());
-        productos = productoService.listarTodos();
+        productoController.eliminar(producto.getId());
+        productos = productoController.listarTodos();
     }
 
-    // Getters y Setters
+    //Getters and setters
     public List<Producto> getProductos() { return productos; }
     public Producto getProductoSeleccionado() { return productoSeleccionado; }
     public void setProductoSeleccionado(Producto productoSeleccionado) { this.productoSeleccionado = productoSeleccionado; }
@@ -82,12 +90,13 @@ public class ProductoView implements Serializable {
     public Boolean getActivoFiltro() { return activoFiltro; }
     public void setActivoFiltro(Boolean activoFiltro) { this.activoFiltro = activoFiltro; }
 
-    public java.util.Date getDesdeFiltro() { return desdeFiltro; }
-    public void setDesdeFiltro(java.util.Date desdeFiltro) { this.desdeFiltro = desdeFiltro; }
+    public Date getDesdeFiltro() { return desdeFiltro; }
+    public void setDesdeFiltro(Date desdeFiltro) { this.desdeFiltro = desdeFiltro; }
 
-    public java.util.Date getHastaFiltro() { return hastaFiltro; }
-    public void setHastaFiltro(java.util.Date hastaFiltro) { this.hastaFiltro = hastaFiltro; }
+    public Date getHastaFiltro() { return hastaFiltro; }
+    public void setHastaFiltro(Date hastaFiltro) { this.hastaFiltro = hastaFiltro; }
 
     public int getPageSize() { return pageSize; }
     public void setPageSize(int pageSize) { this.pageSize = pageSize; }
 }
+
