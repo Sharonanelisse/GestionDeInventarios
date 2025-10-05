@@ -12,7 +12,7 @@ public class ProductoService implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @PersistenceContext(unitName = "InventarioPU")
+    @PersistenceContext(unitName = "GestionDeInventarios")
     private EntityManager em;
 
     public List<Producto> listarTodos() {

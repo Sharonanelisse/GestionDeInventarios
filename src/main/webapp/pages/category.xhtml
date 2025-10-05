@@ -1,53 +1,125 @@
 <!DOCTYPE html>
 <html
-        xmlns="http://www.w3.org/1999/xhtml"
-        xmlns:h="http://xmlns.jcp.org/jsf/html"
-        xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-        xmlns:f="http://xmlns.jcp.org/jsf/core"
-        xmlns:p="http://primefaces.org/ui"
+  xmlns="http://www.w3.org/1999/xhtml"
+  xmlns:h="http://xmlns.jcp.org/jsf/html"
+  xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+  xmlns:f="http://xmlns.jcp.org/jsf/core"
+  xmlns:p="http://primefaces.org/ui"
 >
-<ui:composition template="/WEB-INF/templates/layout.xhtml">
+  <ui:composition template="/WEB-INF/templates/layout.xhtml">
     <ui:define name="content">
-        <div class="card">
-            <h2>Lista de Categorias</h2>
-            <h:form id="formCatalog">
-                <div class="p-inputgroup" style="margin-bottom: 1rem">
-                    <p:inputText
-                            value="#{CategoriaController.query}"
-                            placeholder="Buscar por nombre"
-                    />
-                    <p:commandButton
-                            value="Buscar"
-                            actionListener="#{CategoriaController.buscarPorId}"
-                            update="table msgs"
-                            icon="pi pi-search"
-                    />
-                </div>
+      <div class="card">
+        <h2>Lista de Categorias</h2>
+        <h:form id="formCatalog">
+          <div class="p-inputgroup" style="margin-bottom: 1rem">
+            <p:inputText
+              value="#{CategoriaController.query}"
+              placeholder="Buscar por nombre"
+            />
+            <p:commandButton
+              value="Buscar"
+              actionListener="#{CategoriaController.buscarPorNombre()}"
+              update="table msgs"
+              icon="pi pi-search"
+            />
+            <p:commandButton
+              value="Nueva Categoría"
+              icon="pi pi-plus"
+              actionListener="#{CategoriaController.nuevo()}"
+              update="manage-category-content manageCategoryDialog"
+              oncomplete="PF('manageCategoryDialog').show()"
+              styleClass="ui-button-success"
+              style="margin-left: 10px"
+            />
+          </div>
 
-                <p:dataTable
-                        id="table"
-                        value="#{CategoriaController.categoria}"
-                        var="p"
-                        paginator="true"
-                        rows="10"
-                        responsiveLayout="scroll"
-                        styleClass="p-datatable-striped p-datatable-gridlines"
-                >
-                    <p:column headerText="ID" width="80">#{p.id}</p:column>
+          <p:dataTable
+            id="table"
+            value="#{CategoriaController.categorias}"
+            var="p"
+            paginator="true"
+            rows="10"
+            responsiveLayout="scroll"
+            styleClass="p-datatable-striped p-datatable-gridlines"
+          >
+            <p:column headerText="ID" width="80">#{p.id}</p:column>
 
-                    <p:column headerText="Categoria" sortBy="#{p.title}">
-                        <b>#{p.nombre}</b><br />
-                        <span class="muted">#{p.description}</span>
-                    </p:column>
+            <p:column headerText="Categoria" sortBy="#{p.nombre}">
+              <b>#{p.nombre}</b><br />
+              <span class="muted">#{p.descripcion}</span>
+            </p:column>
 
-                    <p:column headerText="Descripcion" width="200"
-                    >#{p.description}</p:column
-                    >
-                </p:dataTable>
+            <p:column headerText="Descripcion" width="200"
+              >#{p.descripcion}</p:column
+            >
+            <p:column headerText="Acciones" width="120">
+              <p:commandButton
+                icon="pi pi-pencil"
+                update="manage-category-content manageCategoryDialog"
+                oncomplete="PF('manageCategoryDialog').show()"
+                styleClass="edit-button rounded-button ui-button-success"
+                process="@this"
+              >
+                <f:setPropertyActionListener
+                  value="#{p}"
+                  target="#{CategoriaController.categoriaSeleccionada}"
+                />
+              </p:commandButton>
+              <p:commandButton
+                icon="pi pi-trash"
+                actionListener="#{CategoriaController.eliminar(p.id)}"
+                update="table msgs"
+                styleClass="ui-button-danger rounded-button"
+                onclick="if (!confirm('¿Está seguro de que desea eliminar esta categoría?')) return false"
+              />
+            </p:column>
+          </p:dataTable>
 
-                <p:messages id="msgs" closable="true" />
-            </h:form>
-        </div>
+          <p:messages id="msgs" closable="true" />
+        </h:form>
+      </div>
+
+      <p:dialog
+        header="Detalles de Categoría"
+        showEffect="fade"
+        modal="true"
+        widgetVar="manageCategoryDialog"
+        responsive="true"
+      >
+        <p:outputPanel id="manage-category-content" class="ui-fluid">
+          <p:panelGrid columns="2">
+            <p:outputLabel for="nombre" value="Nombre:" />
+            <p:inputText
+              id="nombre"
+              value="#{CategoriaController.categoriaSeleccionada.nombre}"
+              required="true"
+              requiredMessage="El nombre es obligatorio"
+            />
+
+            <p:outputLabel for="descripcion" value="Descripción:" />
+            <p:inputText
+              id="descripcion"
+              value="#{CategoriaController.categoriaSeleccionada.descripcion}"
+            />
+            <f:facet name="footer">
+              <p:commandButton
+                value="Guardar"
+                icon="pi pi-check"
+                actionListener="#{CategoriaController.guardar()}"
+                update="formCatalog:table formCatalog:msgs"
+                process="manage-category-content"
+                oncomplete="PF('manageCategoryDialog').hide()"
+              />
+              <p:commandButton
+                value="Cancelar"
+                icon="pi pi-times"
+                onclick="PF('manageCategoryDialog').hide()"
+                class="ui-button-secondary"
+              />
+            </f:facet>
+          </p:panelGrid>
+        </p:outputPanel>
+      </p:dialog>
     </ui:define>
-</ui:composition>
+  </ui:composition>
 </html>

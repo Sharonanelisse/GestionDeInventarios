@@ -22,14 +22,20 @@ public class ProductoView implements Serializable {
     private Boolean activoFiltro;
     private java.util.Date desdeFiltro;
     private java.util.Date hastaFiltro;
+    private int pageSize = 10; 
 
     @Inject
     private ProductoService productoService;
 
     @PostConstruct
     public void init() {
-        System.out.println("ProductoService inyectado: " + productoService);
-        productos = productoService.listarTodos();
+        try {
+            System.out.println("ProductoService inyectado: " + productoService);
+            productos = productoService.listarTodos();
+        } catch (Exception e) {
+            System.err.println("Error al inicializar ProductoView: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
 
@@ -81,4 +87,7 @@ public class ProductoView implements Serializable {
 
     public java.util.Date getHastaFiltro() { return hastaFiltro; }
     public void setHastaFiltro(java.util.Date hastaFiltro) { this.hastaFiltro = hastaFiltro; }
+
+    public int getPageSize() { return pageSize; }
+    public void setPageSize(int pageSize) { this.pageSize = pageSize; }
 }
