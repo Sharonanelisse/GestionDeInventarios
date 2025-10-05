@@ -38,20 +38,23 @@
         <div class="card" style="margin-bottom: 1rem">
             <p:menubar>
                 <p:menuitem
-                        value="Lista de Categorías"
+                        value="Lista de Categorias"
                         outcome="/pages/category.xhtml"
-                        icon="bi bi-list"
+                        icon="pi pi-list"
                 />
+                    <p:submenu label="Productos" icon="pi pi-list">
+                        <p:menuitem value="Lista de Productos" outcome="/pages/producto.xhtml" icon="pi pi-tag"/>
+                    </p:submenu>
                 <p:menuitem
                         value="Stock"
                         outcome="/pages/stock.xhtml"
-                        icon="bi bi-receipt"
+                        icon="pi pi-receipt"
                 />
 
                 <p:menuitem
                         value="Dashboard"
                         outcome="/pages/dashboard.xhtml"
-                        icon="bi bi-bar-chart"
+                        icon="pi pi-briefcase"
                 />
             </p:menubar>
         </div>

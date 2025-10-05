@@ -1,6 +1,8 @@
 package com.smarroquin.gestiondeinventarios.Service;
 
 import com.smarroquin.gestiondeinventarios.models.Categoria;
+import jakarta.enterprise.context.ApplicationScoped;
+import jakarta.inject.Named;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
@@ -8,12 +10,18 @@ import jakarta.persistence.criteria.CriteriaBuilder;
 import jakarta.persistence.criteria.CriteriaQuery;
 import jakarta.persistence.criteria.Root;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Optional;
 
-public class CategoriaService {
+@Named
+@ApplicationScoped
+public class CategoriaService implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     private EntityManagerFactory emf = Persistence.createEntityManagerFactory("GestionDeInventarios");
+
 
     public Categoria crear(Categoria categoria) {
         validarCategoria(categoria);
@@ -24,6 +32,9 @@ public class CategoriaService {
             em.persist(categoria);
             em.getTransaction().commit();
             return categoria;
+        } catch (Exception e) {
+            System.err.println("Error al crear categoría: " + e.getMessage());
+            throw new RuntimeException("Error al crear categoría", e);
         } finally {
             em.close();
         }
@@ -38,6 +49,9 @@ public class CategoriaService {
             Categoria actualizado = em.merge(categoria);
             em.getTransaction().commit();
             return actualizado;
+        } catch (Exception e) {
+            System.err.println("Error al actualizar categoría: " + e.getMessage());
+            throw new RuntimeException("Error al actualizar categoría", e);
         } finally {
             em.close();
         }
