@@ -1,9 +1,9 @@
-package com.smarroquin.gestiondeinventarios.Views;
+package com.smarroquin.gestiondeinventarios.views;
 
 import com.smarroquin.gestiondeinventarios.controllers.ProductoController;
 import com.smarroquin.gestiondeinventarios.models.Producto;
 import jakarta.annotation.PostConstruct;
-import jakarta.enterprise.context.RequestScoped;
+import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
 import java.io.Serializable;
@@ -11,15 +11,21 @@ import java.util.List;
 import java.util.Date;
 
 @Named("productoView")
-@RequestScoped
+@ViewScoped
 public class ProductoView implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
+    public ProductoView() {
+        System.out.println("Constructor de ProductoView ejecutado");
+    }
+
+    @Inject
+    private ProductoController productoController;
+
     private List<Producto> productos;
     private Producto productoSeleccionado;
 
-    // Filtros
     private String nombreFiltro;
     private String categoriaFiltro;
     private Double precioMinFiltro;
@@ -29,9 +35,6 @@ public class ProductoView implements Serializable {
     private Date hastaFiltro;
 
     private int pageSize = 10;
-
-    @Inject
-    private ProductoController productoController;
 
     @PostConstruct
     public void init() {
@@ -70,7 +73,6 @@ public class ProductoView implements Serializable {
         productos = productoController.listarTodos();
     }
 
-    //Getters and setters
     public List<Producto> getProductos() { return productos; }
     public Producto getProductoSeleccionado() { return productoSeleccionado; }
     public void setProductoSeleccionado(Producto productoSeleccionado) { this.productoSeleccionado = productoSeleccionado; }
@@ -99,4 +101,3 @@ public class ProductoView implements Serializable {
     public int getPageSize() { return pageSize; }
     public void setPageSize(int pageSize) { this.pageSize = pageSize; }
 }
-
