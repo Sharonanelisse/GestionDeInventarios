@@ -3,71 +3,81 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="/WEB-INF/templates/layout.xhtml">
+    <ui:define name="content">
+        <div class="card">
+            <h2>Productos</h2>
 
-<h:head>
-    <title>Productos</title>
-</h:head>
-<h:body>
-    <h:form id="filtrosForm">
-        <h3>Filtros</h3>
-        <p:panelGrid columns="4" columnClasses="label,field,label,field" style="margin-bottom:10px;">
-            <h:outputLabel value="Nombre:"/>
-            <p:inputText value="#{productoView.nombreFiltro}"/>
+            <h:body>
+                <h:form id="filtrosForm">
+                    <h3>Filtros</h3>
+                    <p:panelGrid columns="4" columnClasses="label,field,label,field" style="margin-bottom:10px;">
+                        <h:outputLabel value="Nombre:"/>
+                        <p:inputText value="#{productoView.nombreFiltro}"/>
 
-            <h:outputLabel value="Categoría:"/>
-            <p:inputText value="#{productoView.categoriaFiltro}"/>
+                        <h:outputLabel value="Categoría:"/>
+                        <p:inputText value="#{productoView.categoriaFiltro}"/>
 
-            <h:outputLabel value="Precio Min:"/>
-            <p:inputText value="#{productoView.precioMinFiltro}" />
+                        <h:outputLabel value="Precio Min:"/>
+                        <p:inputText value="#{productoView.precioMinFiltro}" />
 
-            <h:outputLabel value="Precio Max:"/>
-            <p:inputText value="#{productoView.precioMaxFiltro}" />
+                        <h:outputLabel value="Precio Max:"/>
+                        <p:inputText value="#{productoView.precioMaxFiltro}" />
 
-            <h:outputLabel value="Activo:"/>
-            <p:selectBooleanCheckbox value="#{productoView.activoFiltro}" />
+                        <h:outputLabel value="Activo:"/>
+                        <p:selectBooleanCheckbox value="#{productoView.activoFiltro}" />
 
-            <h:outputLabel value="Desde:"/>
-            <p:calendar value="#{productoView.desdeFiltro}" pattern="yyyy-MM-dd" showButtonPanel="true"/>
+                        <h:outputLabel value="Desde:"/>
+                        <p:calendar value="#{productoView.desdeFiltro}" pattern="yyyy-MM-dd" showButtonPanel="true"/>
 
-            <h:outputLabel value="Hasta:"/>
-            <p:calendar value="#{productoView.hastaFiltro}" pattern="yyyy-MM-dd" showButtonPanel="true"/>
-        </p:panelGrid>
+                        <h:outputLabel value="Hasta:"/>
+                        <p:calendar value="#{productoView.hastaFiltro}" pattern="yyyy-MM-dd" showButtonPanel="true"/>
+                    </p:panelGrid>
 
-        <p:commandButton value="Buscar" action="#{productoView.buscar}" update="tablaProductos"/>
-        <p:commandButton value="Nuevo Producto" action="#{productoView.nuevo}"
-                         oncomplete="PF('dlgProducto').show()"/>
-    </h:form>
+                    <p:commandButton value="Buscar" action="#{productoView.buscar}" update="tablaProductos"/>
+                    <p:commandButton value="Nuevo Producto" action="#{productoView.nuevo}"
+                                     oncomplete="PF('dlgProducto').show()"/>
+                </h:form>
 
-    <p:dataTable id="tablaProductos" var="p" value="#{productoView.productos}"
-                 paginator="true" rows="#{productoView.pageSize}" rowsPerPageTemplate="5,10,15"
-                 paginatorPosition="bottom" currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords}"
-                 selection="#{productoView.productoSeleccionado}" selectionMode="single" rowKey="#{p.id}">
-        <p:column headerText="Nombre" sortBy="#{p.nombre}">
-            #{p.nombre}
-        </p:column>
-        <p:column headerText="Categoría">
-            #{p.categoria.nombre}
-        </p:column>
-        <p:column headerText="Precio" sortBy="#{p.precio}">
-            #{p.precio}
-        </p:column>
-        <p:column headerText="Stock Actual" sortBy="#{p.stockActual}">
-            #{p.stockActual}
-        </p:column>
-        <p:column headerText="Activo">
-            <h:outputText value="#{p.activo ? 'Sí' : 'No'}"/>
-        </p:column>
-        <p:column headerText="Acciones">
-            <p:commandButton value="Editar" action="#{productoView.editar(p)}"
-                             oncomplete="PF('dlgProducto').show()" update=":productoForm"/>
-            <p:commandButton value="Eliminar" action="#{productoView.eliminar(p)}" update="tablaProductos"
-                             onclick="return confirm('¿Desea eliminar este producto?');"/>
-        </p:column>
-    </p:dataTable>
+                <p:dataTable id="tablaProductos" var="p" value="#{productoView.productos}"
+                             paginator="true" rows="#{productoView.pageSize}" rowsPerPageTemplate="5,10,15"
+                             paginatorPosition="bottom" currentPageReportTemplate="Mostrando {startRecord} - {endRecord} de {totalRecords}"
+                             selection="#{productoView.productoSeleccionado}" selectionMode="single" rowKey="#{p.id}">
+                    <p:column headerText="Nombre" sortBy="#{p.nombre}">
+                        #{p.nombre}
+                    </p:column>
+                    <p:column headerText="Categoría">
+                        #{p.categoria.nombre}
+                    </p:column>
+                    <p:column headerText="Precio" sortBy="#{p.precio}">
+                        #{p.precio}
+                    </p:column>
+                    <p:column headerText="Stock Actual" sortBy="#{p.stockActual}">
+                        #{p.stockActual}
+                    </p:column>
+                    <p:column headerText="Activo">
+                        <h:outputText value="#{p.activo ? 'Sí' : 'No'}"/>
+                    </p:column>
+                    <p:column headerText="Acciones">
+                        <p:commandButton value="Editar" action="#{productoView.editar(p)}"
+                                         oncomplete="PF('dlgProducto').show()" update=":productoForm"/>
+                        <p:commandButton value="Eliminar" action="#{productoView.eliminar(p)}" update="tablaProductos"
+                                         onclick="return confirm('¿Desea eliminar este producto?');"/>
+                    </p:column>
+                </p:dataTable>
 
-    <p:dialog header="Producto" widgetVar="dlgProducto" modal="true" resizable="false" width="400">
-        <ui:include src="productoForm.xhtml"/>
-    </p:dialog>
+                <p:dialog header="Producto" widgetVar="dlgProducto" modal="true" resizable="false" width="400">
+                    <ui:include src="productoForm.xhtml"/>
+                </p:dialog>
 
-</h:body>
+            </h:body>
+        </div>
+
+
+
+    </ui:define>
+
+</ui:composition>
+
+
 </html>
