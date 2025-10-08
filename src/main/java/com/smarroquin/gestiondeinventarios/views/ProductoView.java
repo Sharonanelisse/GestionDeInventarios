@@ -6,19 +6,19 @@ import jakarta.annotation.PostConstruct;
 import jakarta.faces.view.ViewScoped;
 import jakarta.inject.Inject;
 import jakarta.inject.Named;
+
+import java.io.Serial;
 import java.io.Serializable;
-import java.util.List;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Named("productoView")
 @ViewScoped
 public class ProductoView implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
-
-    public ProductoView() {
-        System.out.println("Constructor de ProductoView ejecutado");
-    }
 
     @Inject
     private ProductoController productoController;
@@ -26,6 +26,7 @@ public class ProductoView implements Serializable {
     private List<Producto> productos;
     private Producto productoSeleccionado;
 
+    // Filtros
     private String nombreFiltro;
     private String categoriaFiltro;
     private Double precioMinFiltro;
@@ -36,23 +37,36 @@ public class ProductoView implements Serializable {
 
     private int pageSize = 10;
 
+    // ------------------------
+    // Inicialización
+    // ------------------------
     @PostConstruct
     public void init() {
         try {
             productos = productoController.listarTodos();
-            System.out.println("ProductoView inicializado correctamente con " + productos.size() + " productos.");
+            if (productos == null) {
+                productos = new ArrayList<>();
+            }
+            System.out.println("ProductoView inicializado con " + productos.size() + " productos.");
         } catch (Exception e) {
-            System.err.println("Error al inicializar ProductoView: " + e.getMessage());
+            System.err.println("Error inicializando ProductoView: " + e.getMessage());
             e.printStackTrace();
+            productos = new ArrayList<>();
         }
     }
 
+    // ------------------------
+    // Métodos de acción
+    // ------------------------
     public void buscar() {
         productos = productoController.buscarConFiltros(
                 nombreFiltro, categoriaFiltro,
                 precioMinFiltro, precioMaxFiltro,
                 activoFiltro, desdeFiltro, hastaFiltro
         );
+        if (productos == null) {
+            productos = new ArrayList<>();
+        }
     }
 
     public void nuevo() {
@@ -64,15 +78,22 @@ public class ProductoView implements Serializable {
     }
 
     public void guardar() {
-        productoController.guardar(productoSeleccionado);
-        productos = productoController.listarTodos();
+        if (productoSeleccionado != null) {
+            productoController.guardar(productoSeleccionado);
+            productos = productoController.listarTodos();
+        }
     }
 
     public void eliminar(Producto producto) {
-        productoController.eliminar(producto.getId());
-        productos = productoController.listarTodos();
+        if (producto != null && producto.getId() != null) {
+            productoController.eliminar(producto.getId());
+            productos = productoController.listarTodos();
+        }
     }
 
+    // ------------------------
+    // Getters y setters
+    // ------------------------
     public List<Producto> getProductos() { return productos; }
     public Producto getProductoSeleccionado() { return productoSeleccionado; }
     public void setProductoSeleccionado(Producto productoSeleccionado) { this.productoSeleccionado = productoSeleccionado; }

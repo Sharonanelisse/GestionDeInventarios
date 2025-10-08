@@ -13,6 +13,7 @@ public class Categoria {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+
     @NotBlank(message = "El nombre de la categoría no puede estar vacío")
     @Column(nullable = false, unique = true)
     private String nombre;
@@ -24,8 +25,7 @@ public class Categoria {
 
     public Categoria() {}
 
-    public Categoria(Long id, String nombre, String descripcion) {
-        this.id = id;
+    public Categoria(String nombre, String descripcion) {
         this.nombre = nombre;
         this.descripcion = descripcion;
     }

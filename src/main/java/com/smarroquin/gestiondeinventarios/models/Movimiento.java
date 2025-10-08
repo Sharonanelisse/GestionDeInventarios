@@ -34,12 +34,12 @@ public class Movimiento {
 
     public Movimiento() {}
 
-    public Movimiento(Long id, TipoMovimiento tipo, Integer cantidad, String motivo, LocalDate fecha) {
-        this.id = id;
+    public Movimiento(TipoMovimiento tipo, Integer cantidad, String motivo, LocalDate fecha, Producto producto) {
         this.tipo = tipo;
         this.cantidad = cantidad;
         this.motivo = motivo;
         this.fecha = fecha;
+        this.producto = producto;
     }
 
     public Long getId() {return id;}
