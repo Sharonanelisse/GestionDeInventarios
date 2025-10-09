@@ -1,4 +1,4 @@
-# Gestion de Investarios
+n# Gestion de Investarios
 
 Sistema de gestión de investarios con JPQL y Criteria API
 
@@ -26,3 +26,7 @@ src/main/java/com/smarroquin/gestiondeinventarios/
 ```bash
 docker run --name postgres-jpql -e POSTGRES_PASSWORD=admin123 -e POSTGRES_USER=postgres -e POSTGRES_DB=gestionInventarios -p 5433:5432 -d postgres
 ```
+
+
+
+LINK VIDEO SOLICITADO:  https://youtu.be/pFlSQARH9Ug
