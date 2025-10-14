@@ -1,4 +1,4 @@
-n# Gestion de Investarios
+# Gestion de Investarios
 
 Sistema de gestión de investarios con JPQL y Criteria API
 
